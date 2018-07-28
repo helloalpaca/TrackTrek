@@ -1,6 +1,7 @@
 package com.example.kwon.tracktrek;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, AddMemo.class);
+                startActivity(intent);
             }
         });
     }
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
         map.animateCamera(CameraUpdateFactory.zoomTo(10));*/
+
 
         //마커 커스터마이징 성공!!
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.chopper);
