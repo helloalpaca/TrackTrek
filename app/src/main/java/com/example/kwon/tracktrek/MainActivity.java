@@ -1,8 +1,11 @@
 package com.example.kwon.tracktrek;
 
 import android.app.FragmentManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,12 +29,21 @@ public class MainActivity extends AppCompatActivity
         MapFragment mapFragment = (MapFragment)fragmentManager
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     @Override
     public void onMapReady(final GoogleMap map) {
 
-/*
+/*      //블로그에 있던 코드 복붙, 성공!!
         LatLng SEOUL = new LatLng(37.56, 126.97);
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -43,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
         map.animateCamera(CameraUpdateFactory.zoomTo(10));*/
 
-
+        //마커 커스터마이징 성공!!
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.chopper);
         LatLng SEOUL = new LatLng(37.56, 126.97);
         MarkerOptions markerOptions = new MarkerOptions().position(SEOUL)
@@ -51,6 +63,9 @@ public class MainActivity extends AppCompatActivity
                 .snippet("snippet snippet snippet snippet snippet...")
                 .icon(icon);
         map.addMarker(markerOptions);
+
+        map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
+        map.animateCamera(CameraUpdateFactory.zoomTo(10));
     }
 
 }
