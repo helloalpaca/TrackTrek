@@ -41,8 +41,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     RelativeLayout boxMap;
     //나의 위도 경도 고도
-    double mLatitude;  //위도
-    double mLongitude; //경도
+    static double mLatitude;  //위도
+    static double mLongitude; //경도
 
 
     @Override

@@ -9,19 +9,28 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
+        /*String sql = "create table if not exists memo("
+                + "_id integer primary key autoincrement, "
+                + "title text,"
+                + "content test);";*/
+
         String sql = "create table if not exists memo("
                 + "_id integer primary key autoincrement, "
                 + "title text,"
-                + "content test);";
+                + "content text,"
+                + "latitude integer,"
+                + "longitude test);";
 
         db.execSQL(sql);
     }
 
     @Override
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        String sql = "drop table if exists student";
+        String sql = "drop table if exists memo";
         db.execSQL(sql);
 
         onCreate(db);
