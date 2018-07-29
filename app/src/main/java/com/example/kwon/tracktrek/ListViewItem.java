@@ -1,13 +1,19 @@
 package com.example.kwon.tracktrek;
 
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
-
 public class ListViewItem {
     private String titleStr ;
     private String ContentStr;
     private Double LatitudeStr;
     private Double LongitudeStr;
+
+    ListViewItem() { }
+
+    ListViewItem(String title, String content, Double latitude, Double longitude){
+        this.titleStr = title;
+        this.ContentStr = content;
+        this.LatitudeStr = latitude;
+        this.LongitudeStr = longitude;
+    }
 
     public void setTitle(String title) {
         titleStr = title;

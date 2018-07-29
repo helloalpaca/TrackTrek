@@ -1,7 +1,6 @@
 package com.example.kwon.tracktrek;
 
 import android.Manifest;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,14 +12,13 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -29,8 +27,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -263,21 +259,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             googleMap.addMarker(makerOptions);
         }
 
-        // for loop를 통한 n개의 마커 생성
-        for (int idx = 0; idx < 10; idx++) {
-            // 1. 마커 옵션 설정 (만드는 과정)
-            MarkerOptions makerOptions = new MarkerOptions();
-            makerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
-                    .position(new LatLng(37.52487 + idx, 126.92723))
-                    .title("마커" + idx); // 타이틀.
-
-            // 2. 마커 생성 (마커를 나타냄)
-            googleMap.addMarker(makerOptions);
-        }
-
-        // 카메라를 위치로 옮긴다.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.52487, 126.92723)));
-
 
 
         //나의 위치 설정
@@ -298,7 +279,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         int i=0;
         while (!cursor.isLast()) {
-            ListViewItem listViewItem = new ListViewItem();
             title = cursor.getString(0);
             content = cursor.getString(1);
             String str3 = cursor.getString(2);
@@ -306,10 +286,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             latitude = Double.parseDouble(str3);
             longitude = Double.parseDouble(str4);
 
-            listViewItem.add(title,content,latitude,longitude);
-            listViewItemArrayList.add(i,listViewItem);
-            listViewItem.clear();
-
+            listViewItemArrayList.add(i,new ListViewItem(title,content,latitude,longitude));
 
             System.out.println("title : " + title + ", Content : " + content + ", latitude :" + latitude + ", longitude : " + longitude);
             cursor.moveToNext();
