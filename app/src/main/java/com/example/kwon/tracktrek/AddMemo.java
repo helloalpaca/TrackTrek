@@ -22,8 +22,9 @@ public class AddMemo extends AppCompatActivity {
     Button deleteDB;
     EditText memoTitle;
     EditText memoContent;
-    DBHelper helper;
-    SQLiteDatabase db;
+    static DBHelper helper;
+    static SQLiteDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class AddMemo extends AppCompatActivity {
 
         helper = new DBHelper(AddMemo.this, "person.db", null, 1);
         db = helper.getWritableDatabase();
+        //db = helper.getReadableDatabase();
         helper.onCreate(db);
 
         addBtn.setOnClickListener(new View.OnClickListener(){
@@ -81,9 +83,12 @@ public class AddMemo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 db.delete("memo", "title=?", new String[]{"홍길동"});
+                db.delete("memo", "title=?", new String[]{"hello"});
+
             }
         });
     }
+
 
 
 }

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -44,11 +46,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     static double mLatitude;  //위도
     static double mLongitude; //경도
 
+    Double latitude;
+    Double longitude;
+
+    static DBHelper helper;
+    static SQLiteDatabase db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        helper = new DBHelper(MainActivity.this, "person.db", null, 1);
+        db = helper.getWritableDatabase();
+        //db = helper.getReadableDatabase();
+        helper.onCreate(db);
 
         boxMap = (RelativeLayout)findViewById(R.id.boxMap);
 
@@ -82,6 +96,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             requestMyLocation();
         }
 
+        try {
+            readDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +110,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
     }
 
     //권한 요청후 응답 콜백
@@ -185,14 +206,45 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //지도타입 - 일반
         this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+        LatLng Google = new LatLng(latitude,longitude);
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(Google);
+        markerOptions.title("Google");
+        markerOptions.snippet("HeadQuater");
+        googleMap.addMarker(markerOptions);
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Google));
+
         //나의 위치 설정
         LatLng position = new LatLng(mLatitude , mLongitude);
 
         //화면중앙의 위치와 카메라 줌비율
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+        //this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
 
         //지도 보여주기
         boxMap.setVisibility(View.VISIBLE);
     }
+
+    public void readDB() throws Exception {
+        db = helper.getReadableDatabase();
+        Cursor cursor = db.query("memo", new String[]{"title","content","latitude","longitude"}, null, null, null, null, null);
+        if(cursor.getCount() == 0) throw new Exception();
+        cursor.moveToFirst();
+        String str1 = cursor.getString(0);
+        String str2 = cursor.getString(1);
+
+
+        String str3 = cursor.getString(2);
+        String str4 = cursor.getString(3);
+        latitude = Double.parseDouble(str3);
+        longitude = Double.parseDouble(str4);
+
+        System.out.println("title : "+str1+", Content : "+str2+", latitude :"+latitude+", longitude : "+longitude);
+        //Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
+        cursor.close();
+    }
+
+
 }
 
