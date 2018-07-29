@@ -34,6 +34,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -46,11 +48,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     static double mLatitude;  //위도
     static double mLongitude; //경도
 
+    String title;
+    String content;
     Double latitude;
     Double longitude;
 
     static DBHelper helper;
     static SQLiteDatabase db;
+
+    ArrayList<ListViewItem> listViewItemArrayList;
 
 
 
@@ -58,6 +64,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listViewItemArrayList = new ArrayList<ListViewItem>();
 
         helper = new DBHelper(MainActivity.this, "person.db", null, 1);
         db = helper.getWritableDatabase();
@@ -175,7 +183,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        /*      //블로그에 있던 코드 복붙, 성공!!
+/*      //블로그에 있던 코드 복붙, 성공!!
         LatLng SEOUL = new LatLng(37.56, 126.97);
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -210,12 +218,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(Google);
-        markerOptions.title("Google");
-        markerOptions.snippet("HeadQuater");
+        markerOptions.title(title);
+        markerOptions.snippet(content);
         googleMap.addMarker(markerOptions);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Google));
+        LatLng SEOUL = new LatLng(37.56, 126.97);
 
+        MarkerOptions markerOptions2 = new MarkerOptions();
+        markerOptions2.position(SEOUL);
+        markerOptions2.title("서울");
+        markerOptions2.snippet("한국의 수도");
+        googleMap.addMarker(markerOptions2);
+
+
+
+
+
+/*실패
+        for (int i = 0; i < listViewItemArrayList.size(); i++) {
+            // 1. 마커 옵션 설정 (만드는 과정)
+            MarkerOptions makerOptions = new MarkerOptions();
+            makerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
+                    .position(new LatLng(listViewItemArrayList.get(i).getLatitude(),listViewItemArrayList.get(i).getLongitude()))
+                    .title(listViewItemArrayList.get(i).getTitle()); // 타이틀.
+            makerOptions.snippet(listViewItemArrayList.get(i).getContent());
+            // 2. 마커 생성 (마커를 나타냄)
+            googleMap.addMarker(makerOptions);
+        }
+*/
         //나의 위치 설정
         LatLng position = new LatLng(mLatitude , mLongitude);
 
@@ -231,18 +261,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Cursor cursor = db.query("memo", new String[]{"title","content","latitude","longitude"}, null, null, null, null, null);
         if(cursor.getCount() == 0) throw new Exception();
         cursor.moveToFirst();
-        String str1 = cursor.getString(0);
-        String str2 = cursor.getString(1);
+        title = cursor.getString(0);
+        content = cursor.getString(1);
 
 
         String str3 = cursor.getString(2);
         String str4 = cursor.getString(3);
         latitude = Double.parseDouble(str3);
         longitude = Double.parseDouble(str4);
-
-        System.out.println("title : "+str1+", Content : "+str2+", latitude :"+latitude+", longitude : "+longitude);
+/*
+        listViewItemArrayList.get(cursor.getCount()-1).setTitle(title);
+        listViewItemArrayList.get(cursor.getCount()-1).setContent(content);
+        listViewItemArrayList.get(cursor.getCount()-1).setLatitude(latitude);
+        listViewItemArrayList.get(cursor.getCount()-1).setLongitude(longitude);
+*/
+        System.out.println("title : "+title+", Content : "+content+", latitude :"+latitude+", longitude : "+longitude);
         //Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
-        cursor.close();
+        //cursor.moveToNext();
     }
 
 

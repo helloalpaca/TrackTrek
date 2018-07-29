@@ -6,8 +6,8 @@ import android.widget.ImageView;
 public class ListViewItem {
     private String titleStr ;
     private String ContentStr;
-    private Integer LatitudeStr;
-    private Integer LongitudeStr;
+    private Double LatitudeStr;
+    private Double LongitudeStr;
 
     public void setTitle(String title) {
         titleStr = title;
@@ -15,10 +15,10 @@ public class ListViewItem {
     public void setContent(String contentStr) {
         ContentStr = contentStr;
     }
-    public void setLatitude(int latitudeStr){
+    public void setLatitude(Double latitudeStr){
         LatitudeStr = latitudeStr;
     }
-    public void setLongitude(int longitudeStr){
+    public void setLongitude(Double longitudeStr){
         LongitudeStr = longitudeStr;
     }
 
@@ -28,10 +28,10 @@ public class ListViewItem {
     public String getContent() {
         return this.ContentStr;
     }
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return this.LatitudeStr;
     }
-    public Integer getLongitude() {
+    public Double getLongitude() {
         return this.LongitudeStr;
     }
 

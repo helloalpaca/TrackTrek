@@ -53,8 +53,10 @@ public class AddMemo extends AppCompatActivity {
 
                 values.put("title", Title);
                 values.put("content", Content);
-                values.put("latitude",MainActivity.mLatitude);
-                values.put("longitude",MainActivity.mLongitude);
+                //values.put("latitude",MainActivity.mLatitude);
+                //values.put("longitude",MainActivity.mLongitude);
+                values.put("latitude",37);
+                values.put("longitude",-122);
                 db.insert("memo", null, values);
 
                 Toast.makeText(AddMemo.this,"ADD Memo",Toast.LENGTH_LONG).show();
