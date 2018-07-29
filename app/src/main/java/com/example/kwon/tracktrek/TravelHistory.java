@@ -22,8 +22,8 @@ public class TravelHistory extends AppCompatActivity {
     Bitmap bitmap;
 
     //SQLite 객체
-    //static DBHelper helper;
-    //static SQLiteDatabase db;
+    static DBHelper helper;
+    static SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +36,11 @@ public class TravelHistory extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.chopper);
         Bitmap bitmap = drawable.getBitmap();
         imgBtn.setImageBitmap(resizeBitmapImage(bitmap,500));
-/*
+
         helper = new DBHelper(TravelHistory.this, "person.db", null, 1);
         db = helper.getWritableDatabase();
         helper.onCreate(db);
-
+/*
         Cursor c = db.query("history",
                 null, null, null,
                 null, null, null);

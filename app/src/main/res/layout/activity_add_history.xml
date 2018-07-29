@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AddHistory">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title" />
+    <EditText
+        android:id="@+id/setTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Put Your Trip TItle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Day" />
+    <EditText
+        android:id="@+id/setStartMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Put Your Start Month"/>
+    <EditText
+        android:id="@+id/setStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Put Your Start Date"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Day" />
+    <EditText
+        android:id="@+id/setEndMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Put Your End Month"/>
+    <EditText
+        android:id="@+id/setEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Put Your End Date"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Image" />
+
+    <ImageView
+        android:id="@+id/setImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/chopper"/>
+
+    <Button
+        android:id="@+id/addHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD HISTORY"/>
+
+</LinearLayout>
