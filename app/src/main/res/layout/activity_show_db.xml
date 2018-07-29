@@ -4,43 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".AddMemo">
+    tools:context=".ShowDB"
+    android:orientation="vertical">
 
-    <TextView
+    <Button
+        android:id="@+id/showDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add title"/>
+        android:text="showDB"/>
 
     <EditText
-        android:id="@+id/memoTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Put your memo title here"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add memo"/>
-
-    <EditText
-        android:id="@+id/memo"
+        android:id="@+id/deleteTitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="Put your memo here"/>
+        android:hint="지우고 싶은 instance의 Title"/>
 
     <Button
-        android:id="@+id/memoAdd"
+        android:id="@+id/deleteInstance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"/>
+        android:text="delete Instance"/>
 
     <Button
-        android:id="@+id/watchDB"
+        android:id="@+id/deleteDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="watch DB instance"/>
+        android:text="delete All Instance"/>
 
-
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
 </LinearLayout>

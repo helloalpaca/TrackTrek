@@ -12,10 +12,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        /*String sql = "create table if not exists memo("
-                + "_id integer primary key autoincrement, "
-                + "title text,"
-                + "content test);";*/
 
         String sql = "create table if not exists memo("
                 + "_id integer primary key autoincrement, "
@@ -28,7 +24,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         String sql = "drop table if exists memo";
         db.execSQL(sql);
