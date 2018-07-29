@@ -6,13 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".TravelHistory">
 
-    <ImageButton
-        android:id="@+id/imgBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <ListView
-        android:layout_below="@id/imgBtn"
         android:id="@+id/list2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>

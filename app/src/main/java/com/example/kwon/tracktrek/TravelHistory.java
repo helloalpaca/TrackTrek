@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class TravelHistory extends AppCompatActivity {
 
-    ImageButton imgBtn;
+
     ListView list2;
 
     Bitmap bitmap;
@@ -42,12 +42,7 @@ public class TravelHistory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_history);
 
-        imgBtn = (ImageButton)findViewById(R.id.imgBtn);
         list2 = (ListView)findViewById(R.id.list2);
-
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.chopper);
-        Bitmap bitmap = drawable.getBitmap();
-        imgBtn.setImageBitmap(resizeBitmapImage(bitmap,500));
 
         helper = new DBHelper(TravelHistory.this, "person.db", null, 1);
         db = helper.getWritableDatabase();

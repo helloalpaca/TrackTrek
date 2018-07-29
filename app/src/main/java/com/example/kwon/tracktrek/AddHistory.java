@@ -6,21 +6,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AddHistory extends AppCompatActivity {
 
     Button addHistory;
     EditText setTitle;
-    EditText setStartMonth;
-    EditText setStartDate;
-    EditText setEndMonth;
-    EditText setEndDate;
+    Button setStart;
+    Button setEnd;
+    DatePicker dp;
+
 
     DBHelper helper;
     SQLiteDatabase db;
@@ -30,6 +32,9 @@ public class AddHistory extends AppCompatActivity {
     SimpleDateFormat sdf;
     String getTime;
 
+    String StartDay;
+    String EndDay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +42,10 @@ public class AddHistory extends AppCompatActivity {
 
         addHistory = (Button)findViewById(R.id.addHistory);
         setTitle = (EditText)findViewById(R.id.setTitle);
-        setStartMonth = (EditText)findViewById(R.id.setStartMonth);
-        setStartDate = (EditText)findViewById(R.id.setStartDate);
-        setEndMonth = (EditText)findViewById(R.id.setEndDate);
-        setEndDate = (EditText)findViewById(R.id.setEndDate);
+        setStart = (Button)findViewById(R.id.setStart);
+        setEnd = (Button)findViewById(R.id.setEnd);
+        dp = (DatePicker)findViewById(R.id.dp);
+
 
         helper = new DBHelper(AddHistory.this, "person.db", null, 1);
         db = helper.getWritableDatabase();
@@ -53,6 +58,48 @@ public class AddHistory extends AppCompatActivity {
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         getTime = sdf.format(date);
 
+        setStart.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int year = dp.getYear();
+                int month = dp.getMonth();
+                int dayOfMonth = dp.getDayOfMonth();
+
+                String syear = Integer.toString(year);
+                String smonth;
+                if (month < 9)
+                {
+                    smonth = "0"; smonth+=Integer.toString(month+1);
+                }
+                else smonth=Integer.toString(month+1);
+                String sdayOfMonth = Integer.toString(dayOfMonth);
+
+                StartDay = syear + "-" + smonth + "-" + sdayOfMonth;
+                System.out.println("시작일 : " +StartDay);
+            }
+        });
+
+        setEnd.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int year = dp.getYear();
+                int month = dp.getMonth();
+                int dayOfMonth = dp.getDayOfMonth();
+
+                String syear = Integer.toString(year);
+                String smonth;
+                if (month < 9)
+                {
+                    smonth = "0"; smonth+=Integer.toString(month+1);
+                }
+                else smonth=Integer.toString(month+1);
+                String sdayOfMonth = Integer.toString(dayOfMonth);
+
+                EndDay = syear + "-" + smonth + "-" + sdayOfMonth;
+                System.out.println("마지막일 : " +EndDay);
+            }
+        });
+
 
         //DB에 History 데이터 추가
         addHistory.setOnClickListener(new View.OnClickListener(){
@@ -61,19 +108,15 @@ public class AddHistory extends AppCompatActivity {
                 ContentValues values = new ContentValues();
 
                 String Title = setTitle.getText().toString();
-                //Integer StartMonth = Integer.parseInt(setStartMonth.getText().toString());
-                //Integer StartDate = Integer.parseInt(setStartDate.getText().toString());
-                //Integer EndMonth = Integer.parseInt(setEndMonth.getText().toString());
-                //Integer EndDate = Integer.parseInt(setEndDate.getText().toString());
 
                 values.put("title", Title);
-                values.put("StartDay",getTime);
-                values.put("endDay","2018-07-31");
+                values.put("StartDay",StartDay);
+                values.put("endDay",EndDay);
 
                 db.insert("history", null, values);
 
                 System.out.println("title : "+Title+"StartDay : "+getTime+"endDay : "+"2018-07-31");
-                Toast.makeText(AddHistory.this,"ADD Memo",Toast.LENGTH_LONG).show();
+                Toast.makeText(AddHistory.this,"ADD History",Toast.LENGTH_LONG).show();
 
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,7 +132,6 @@ public class AddHistory extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
             }
         });
     }
