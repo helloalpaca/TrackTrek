@@ -22,6 +22,20 @@ public class ListViewItem {
         LongitudeStr = longitudeStr;
     }
 
+    public void add(String title, String content, Double latitude, Double longitude){
+        this.titleStr = title;
+        this.ContentStr = content;
+        this.LatitudeStr = latitude;
+        this.LongitudeStr = longitude;
+    }
+
+    public void clear(){
+        titleStr = null;
+        ContentStr = null;
+        LongitudeStr = null;
+        LatitudeStr = null;
+    }
+
     public String getTitle() {
         return this.titleStr;
     }

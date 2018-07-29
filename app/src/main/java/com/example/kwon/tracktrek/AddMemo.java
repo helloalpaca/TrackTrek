@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class AddMemo extends AppCompatActivity {
 
     Button addBtn;
+    Button addBtn2;
     Button showDB;
     Button deleteDB;
     EditText memoTitle;
@@ -32,6 +33,7 @@ public class AddMemo extends AppCompatActivity {
         setContentView(R.layout.activity_add_memo);
 
         addBtn = (Button)findViewById(R.id.memoAdd);
+        addBtn2 = (Button)findViewById(R.id.memoAdd2);
         showDB = (Button)findViewById(R.id.showDB);
         deleteDB = (Button)findViewById(R.id.deleteDB);
         memoTitle = (EditText)findViewById(R.id.memoTitle);
@@ -55,8 +57,27 @@ public class AddMemo extends AppCompatActivity {
                 values.put("content", Content);
                 //values.put("latitude",MainActivity.mLatitude);
                 //values.put("longitude",MainActivity.mLongitude);
-                values.put("latitude",37);
-                values.put("longitude",-122);
+                values.put("latitude",37.56);
+                values.put("longitude", 126.97);
+                db.insert("memo", null, values);
+
+                Toast.makeText(AddMemo.this,"ADD Memo",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        addBtn2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                ContentValues values = new ContentValues();
+
+                String Title = memoTitle.getText().toString();
+                String Content = memoContent.getText().toString();
+
+
+                values.put("title", Title);
+                values.put("content", Content);
+                values.put("latitude",MainActivity.mLatitude);
+                values.put("longitude",MainActivity.mLongitude);
                 db.insert("memo", null, values);
 
                 Toast.makeText(AddMemo.this,"ADD Memo",Toast.LENGTH_LONG).show();
@@ -85,7 +106,8 @@ public class AddMemo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 db.delete("memo", "title=?", new String[]{"홍길동"});
-                db.delete("memo", "title=?", new String[]{"hello"});
+                db.delete("memo", "title=?", new String[]{"Seoul"});
+                db.delete("memo",null,null);
 
             }
         });

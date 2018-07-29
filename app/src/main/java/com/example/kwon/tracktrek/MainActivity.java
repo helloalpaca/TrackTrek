@@ -44,19 +44,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     MapFragment mapFragment;
     LocationManager locationManager;
     RelativeLayout boxMap;
+
     //나의 위도 경도 고도
     static double mLatitude;  //위도
     static double mLongitude; //경도
 
+    //SQLite 객체
+    static DBHelper helper;
+    static SQLiteDatabase db;
+
+    //DB 데이터
     String title;
     String content;
     Double latitude;
     Double longitude;
 
-    static DBHelper helper;
-    static SQLiteDatabase db;
-
-    ArrayList<ListViewItem> listViewItemArrayList;
+    //DB 데이터 여러개 받아오기 위한 Array
+    //ListViewItem listViewItem = new ListViewItem();
+    ArrayList<ListViewItem> listViewItemArrayList = new ArrayList<ListViewItem>();
 
 
 
@@ -65,17 +70,28 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listViewItemArrayList = new ArrayList<ListViewItem>();
-
         helper = new DBHelper(MainActivity.this, "person.db", null, 1);
         db = helper.getWritableDatabase();
-        //db = helper.getReadableDatabase();
         helper.onCreate(db);
 
         boxMap = (RelativeLayout)findViewById(R.id.boxMap);
 
         //LocationManager
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+
+        //DB데이터 받아오기.
+        try {
+            readDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for(int i=0;i<listViewItemArrayList.size();i++){
+            System.out.println(i+"'s Title : "+listViewItemArrayList.get(i).getTitle());
+            System.out.println(i+"'s Content : "+listViewItemArrayList.get(i).getContent());
+            System.out.println(i+"'s Latitude : "+listViewItemArrayList.get(i).getLatitude());
+            System.out.println(i+"'s Longitude : "+listViewItemArrayList.get(i).getLongitude());
+        }
 
 
         //GPS가 켜져있는지 체크
@@ -104,12 +120,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             requestMyLocation();
         }
 
-        try {
-            readDB();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+
+        //Button을 누르면 AddMemo화면으로 넘어감.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,19 +196,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-/*      //블로그에 있던 코드 복붙, 성공!!
-        LatLng SEOUL = new LatLng(37.56, 126.97);
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(SEOUL);
-        markerOptions.title("서울");
-        markerOptions.snippet("한국의 수도");
-        map.addMarker(markerOptions);
-
-        map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-        map.animateCamera(CameraUpdateFactory.zoomTo(10));*/
-
-
 /*      //마커 커스터마이징 성공!!
         BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.chopper);
         LatLng SEOUL = new LatLng(37.56, 126.97);
@@ -208,13 +208,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
         map.animateCamera(CameraUpdateFactory.zoomTo(10));
 */
-
         this.googleMap = googleMap;
 
         //지도타입 - 일반
         this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        LatLng Google = new LatLng(latitude,longitude);
+        //두개의 마커를 각각 표시하는 코드
+/*        LatLng Google = new LatLng(latitude,longitude);
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(Google);
@@ -229,28 +229,62 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions2.title("서울");
         markerOptions2.snippet("한국의 수도");
         googleMap.addMarker(markerOptions2);
+*/
+/*
+        ArrayList<MarkerOptions> markerOptionsArrayList = new ArrayList<MarkerOptions>();
+        MarkerOptions markerOptions = new MarkerOptions();
 
+        for (int i = 0; i < listViewItemArrayList.size(); i++) {
+            // 1. 마커 옵션 설정 (만드는 과정)
 
+            markerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
+                    .position(new LatLng(listViewItemArrayList.get(i).getLatitude(),listViewItemArrayList.get(i).getLongitude()))
+                    .title(listViewItemArrayList.get(i).getTitle()); // 타이틀.
+            markerOptions.snippet(listViewItemArrayList.get(i).getContent());
 
+            markerOptionsArrayList.add(markerOptions);
+            // 2. 마커 생성 (마커를 나타냄)
+            //googleMap.addMarker(makerOptions);
+        }
 
+        for(int i=0;i<markerOptionsArrayList.size();i++){
+            googleMap.addMarker(markerOptionsArrayList.get(i));
+        }
+*/
 
-/*실패
         for (int i = 0; i < listViewItemArrayList.size(); i++) {
             // 1. 마커 옵션 설정 (만드는 과정)
             MarkerOptions makerOptions = new MarkerOptions();
             makerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
                     .position(new LatLng(listViewItemArrayList.get(i).getLatitude(),listViewItemArrayList.get(i).getLongitude()))
                     .title(listViewItemArrayList.get(i).getTitle()); // 타이틀.
-            makerOptions.snippet(listViewItemArrayList.get(i).getContent());
+
             // 2. 마커 생성 (마커를 나타냄)
             googleMap.addMarker(makerOptions);
         }
-*/
+
+        // for loop를 통한 n개의 마커 생성
+        for (int idx = 0; idx < 10; idx++) {
+            // 1. 마커 옵션 설정 (만드는 과정)
+            MarkerOptions makerOptions = new MarkerOptions();
+            makerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
+                    .position(new LatLng(37.52487 + idx, 126.92723))
+                    .title("마커" + idx); // 타이틀.
+
+            // 2. 마커 생성 (마커를 나타냄)
+            googleMap.addMarker(makerOptions);
+        }
+
+        // 카메라를 위치로 옮긴다.
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.52487, 126.92723)));
+
+
+
         //나의 위치 설정
         LatLng position = new LatLng(mLatitude , mLongitude);
 
         //화면중앙의 위치와 카메라 줌비율
-        //this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
 
         //지도 보여주기
         boxMap.setVisibility(View.VISIBLE);
@@ -258,28 +292,40 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void readDB() throws Exception {
         db = helper.getReadableDatabase();
-        Cursor cursor = db.query("memo", new String[]{"title","content","latitude","longitude"}, null, null, null, null, null);
-        if(cursor.getCount() == 0) throw new Exception();
+        Cursor cursor = db.query("memo", new String[]{"title", "content", "latitude", "longitude"}, null, null, null, null, null);
+        if (cursor.getCount() == 0) throw new Exception();
         cursor.moveToFirst();
+
+        int i=0;
+        while (!cursor.isLast()) {
+            ListViewItem listViewItem = new ListViewItem();
+            title = cursor.getString(0);
+            content = cursor.getString(1);
+            String str3 = cursor.getString(2);
+            String str4 = cursor.getString(3);
+            latitude = Double.parseDouble(str3);
+            longitude = Double.parseDouble(str4);
+
+            listViewItem.add(title,content,latitude,longitude);
+            listViewItemArrayList.add(i,listViewItem);
+            listViewItem.clear();
+
+
+            System.out.println("title : " + title + ", Content : " + content + ", latitude :" + latitude + ", longitude : " + longitude);
+            cursor.moveToNext();
+            i++;
+        }
+
         title = cursor.getString(0);
         content = cursor.getString(1);
-
-
         String str3 = cursor.getString(2);
         String str4 = cursor.getString(3);
         latitude = Double.parseDouble(str3);
         longitude = Double.parseDouble(str4);
-/*
-        listViewItemArrayList.get(cursor.getCount()-1).setTitle(title);
-        listViewItemArrayList.get(cursor.getCount()-1).setContent(content);
-        listViewItemArrayList.get(cursor.getCount()-1).setLatitude(latitude);
-        listViewItemArrayList.get(cursor.getCount()-1).setLongitude(longitude);
-*/
-        System.out.println("title : "+title+", Content : "+content+", latitude :"+latitude+", longitude : "+longitude);
-        //Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
-        //cursor.moveToNext();
+
+
+        System.out.println("title : " + title + ", Content : " + content + ", latitude :" + latitude + ", longitude : " + longitude);
+
     }
-
-
 }
 
