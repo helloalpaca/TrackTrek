@@ -69,8 +69,9 @@ public class ShowDB extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 db.delete("memo",null,null);
-                Toast.makeText(ShowDB.this,"DB를 모드 지웠습니다!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowDB.this,"DB를 모두 지웠습니다!",Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }

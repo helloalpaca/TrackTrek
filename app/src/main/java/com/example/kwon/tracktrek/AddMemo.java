@@ -16,6 +16,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AddMemo extends AppCompatActivity {
 
     Button addBtn;
@@ -24,6 +27,8 @@ public class AddMemo extends AppCompatActivity {
     EditText memoContent;
     static DBHelper helper;
     static SQLiteDatabase db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class AddMemo extends AppCompatActivity {
         dbBtn = (Button)findViewById(R.id.watchDB);
         memoTitle = (EditText)findViewById(R.id.memoTitle);
         memoContent = (EditText)findViewById(R.id.memo);
+
+
 
         helper = new DBHelper(AddMemo.this, "person.db", null, 1);
         db = helper.getWritableDatabase();
@@ -54,7 +61,7 @@ public class AddMemo extends AppCompatActivity {
                 values.put("content", Content);
                 //values.put("latitude",MainActivity.mLatitude);
                 //values.put("longitude",MainActivity.mLongitude);
-                values.put("latitude",37.56);
+                values.put("latitude", 37.56);
                 values.put("longitude", 126.97);
                 db.insert("memo", null, values);
 

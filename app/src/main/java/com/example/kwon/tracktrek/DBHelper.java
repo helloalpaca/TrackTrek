@@ -24,10 +24,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql2 = "create table if not exists history("
                 + "_id integer primary key autoincrement, "
                 + "title text,"
-                + "startMonth integer,"
-                + "startDate integer,"
-                + "endMonth integer,"
-                + "endDate integer);";
+                + "StartDay text,"
+                + "endDay text);";
         db.execSQL(sql2);
     }
 

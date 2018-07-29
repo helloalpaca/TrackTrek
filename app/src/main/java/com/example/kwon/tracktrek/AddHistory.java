@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AddHistory extends AppCompatActivity {
 
     Button addHistory;
@@ -20,6 +24,11 @@ public class AddHistory extends AppCompatActivity {
 
     DBHelper helper;
     SQLiteDatabase db;
+
+    long now;
+    Date date;
+    SimpleDateFormat sdf;
+    String getTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,13 @@ public class AddHistory extends AppCompatActivity {
         //db = helper.getReadableDatabase();
         helper.onCreate(db);
 
+        //현재 날짜 구하기
+        now = System.currentTimeMillis();
+        date = new Date(now);
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        getTime = sdf.format(date);
+
+
         //DB에 History 데이터 추가
         addHistory.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -45,24 +61,35 @@ public class AddHistory extends AppCompatActivity {
                 ContentValues values = new ContentValues();
 
                 String Title = setTitle.getText().toString();
-                Integer StartMonth = Integer.parseInt(setStartMonth.getText().toString());
-                Integer StartDate = Integer.parseInt(setStartDate.getText().toString());
-                Integer EndMonth = Integer.parseInt(setEndMonth.getText().toString());
-                Integer EndDate = Integer.parseInt(setEndDate.getText().toString());
-
+                //Integer StartMonth = Integer.parseInt(setStartMonth.getText().toString());
+                //Integer StartDate = Integer.parseInt(setStartDate.getText().toString());
+                //Integer EndMonth = Integer.parseInt(setEndMonth.getText().toString());
+                //Integer EndDate = Integer.parseInt(setEndDate.getText().toString());
 
                 values.put("title", Title);
-                values.put("startMonth", StartMonth);
-                values.put("startDate", StartDate);
-                values.put("endMonth", EndMonth);
-                values.put("endDay", EndDate);
-
-
+                values.put("StartDay",getTime);
+                values.put("endDay","2018-07-31");
 
                 db.insert("history", null, values);
 
-                System.out.println("title : "+Title+"시작일 :"+StartMonth+"-"+StartDate+"마지막일 :"+EndMonth+"-"+EndDate);
+                System.out.println("title : "+Title+"StartDay : "+getTime+"endDay : "+"2018-07-31");
                 Toast.makeText(AddHistory.this,"ADD Memo",Toast.LENGTH_LONG).show();
+
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date beginDate = formatter.parse(getTime);
+                    Date endDate = formatter.parse("2018-07-31");
+
+                    // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+                    long diff = endDate.getTime() - beginDate.getTime();
+                    long diffDays = diff / (24 * 60 * 60 * 1000);
+
+                    System.out.println("날짜차이 : " + diffDays);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
