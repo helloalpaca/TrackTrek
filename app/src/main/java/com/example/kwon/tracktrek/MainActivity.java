@@ -106,8 +106,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         //Button을 누르면 AddMemo화면으로 넘어감.
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddMemo.class);

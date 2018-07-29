@@ -27,7 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".TravelHistory">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,13 +39,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC5tklzStZojrd8tR4_hyP-1Aea9zXGZq4" />
 
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddMemo" />
         <activity android:name=".ShowDB" />
-        <activity android:name=".TravelHistory"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".AddHistory"></activity>
     </application>
 
 </manifest>

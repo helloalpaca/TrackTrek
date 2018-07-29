@@ -19,14 +19,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "content text,"
                 + "latitude integer,"
                 + "longitude test);";
-
         db.execSQL(sql);
+
+        String sql2 = "create table if not exists history("
+                + "_id integer primary key autoincrement, "
+                + "title text,"
+                + "startDay date,"
+                + "endDay test);";
+        db.execSQL(sql2);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         String sql = "drop table if exists memo";
+        String sql2 = "drop table if exists history";
         db.execSQL(sql);
+        db.execSQL(sql2);
 
         onCreate(db);
     }
